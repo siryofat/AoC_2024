@@ -13,6 +13,8 @@ with open('src/Day01/day01_input.csv', 'r', newline='') as csvfile:
         locations_1.append(int(parts[0]))
         locations_2.append(int(parts[1]))
 
+# Part One:
+
 locations_1.sort()
 locations_2.sort()
 
@@ -23,6 +25,12 @@ for location_1, location_2 in zip(locations_1, locations_2):
 print(f'Total distance: {total_distance}') #936063
 
 # Part Two:
+# TODO: Do this more pythonic!
+# This is definetly not the most pythonic approach, but it's late now.
+# Best approach:
+# 1 Convert locations_1 to set.
+# 2 Use the Counter class from collections
+# 3 Second for loop stays the same. Even though comprehension can be used here, I prefer the loop for readability.
 
 repetitions = {}
 
