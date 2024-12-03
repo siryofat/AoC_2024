@@ -1,7 +1,8 @@
 import csv
 from itertools import pairwise
+from typing import Type
 
-def read_csv_file(csv_file_name: str) -> '_csv.reader':
+def read_csv_file(csv_file_name: str) -> Type[csv.reader]:
     with open(csv_file_name, 'r', newline='') as csvfile:
         csv_reader = csv.reader(csvfile)
         return csv_reader
