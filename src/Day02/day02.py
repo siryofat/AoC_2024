@@ -1,12 +1,5 @@
 import csv
 from itertools import pairwise
-from typing import Type
-
-def read_csv_file(csv_file_name: str) -> Type[csv.reader]:
-    with open(csv_file_name, 'r', newline='') as csvfile:
-        csv_reader = csv.reader(csvfile)
-        return csv_reader
-
 
 def check_for_safety(list_to_check: list[int]) -> bool:
     first_item, second_item = list_to_check[0], list_to_check[1]
