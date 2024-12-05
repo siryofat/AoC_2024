@@ -70,23 +70,84 @@ def get_array_size(txt_array: list) -> tuple:
     n = len(txt_array[0])-1
     return (m, n)
 
+def is_valid_word_length(word_to_check: str) -> int:
+    word_length = len(word_to_check)
 
+    if word_length % 2 == 0:
+        raise ValueError(f'A valid diagonal size must be an odd number, got {word_length} instead.')
 
+    mid_side = (word_length - 1) / 2
+    return mid_side
 
-def main():
+def is_in_valid_cross_zone(array_size: tuple, current_index: tuple, mid_side: int) -> bool:
+    """
+    Validates index to get a cross without going out of index.
+    \./.....\./
+    .XXXXXXXXX.
+    /X\...../.\
+    """
+
+    m, n = array_size
+    i, j = current_index
+
+    # checks for out of bounds bools:
+    invalid_top = 0 <= j < mid_side
+    invalid_bottom = m - mid_side <= j < n
+    invalid_left = 0 <= i < mid_side
+    invalid_rigth = m - mid_side <= i < m
+
+    return not any([invalid_bottom, invalid_left, invalid_rigth, invalid_top])
+
+def get_diagonal_word(current_index: tuple, cross_leg_size: int, directions: str) -> str:
+    word = ''
+    for direction in directions.split('-'):
+        pass
+
+def get_crossed_word(current_index: tuple, cross_leg_size: int) -> tuple:
+    pass
+
+# the solvers:
+def part_one():
     # read txt file:
     with open('src/Day04-CeresSearch/day04_input.txt', 'r') as file:
         lines = file.readlines()
 
     array_size = get_array_size(lines)
     word_to_find = 'XMAS'
-    start_letter = word_to_find[0]
-    limit = len(word_to_find)
+    start_letter = 'A'
+    limit = 1
     total_score = 0
+    tests = ['MAS', 'SAM']
 
     for m, line in enumerate(lines):
         for n, letter in enumerate(line):
             if letter == start_letter:
+                index = (m, n)
+                test_index = index
+                if is_in_valid_cross_zone(array_size, index, limit):
+                    first_word = lines[m-1][n-1] + 'A' + lines[m+1][n+1]
+                    second_word = lines[m-1][n+1] + 'A' + lines[m+1][n-1]
+                    if first_word in tests and second_word in tests:
+                        total_score += 1
+
+    print(total_score)
+
+
+def part_two():
+    # Future me, I'm so sorry.
+    # read txt file:
+    with open('src/Day04-CeresSearch/day04_input.txt', 'r') as file:
+        lines = file.readlines()
+
+    array_size = get_array_size(lines)
+    word_to_find = 'MAS'
+    mid_letter = word_to_find[1]
+    limit = 2
+    total_score = 0
+
+    for m, line in enumerate(lines):
+        for n, letter in enumerate(line):
+            if letter == mid_letter:
                 index = (m, n)
                 test_index = index
                 zone = get_zone(array_size, index, limit)
@@ -107,4 +168,4 @@ def main():
 
     print(total_score)
 
-main()
+part_one()
