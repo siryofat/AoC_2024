@@ -7,7 +7,7 @@ def is_in_range(value:int, numbers:list[int]) -> bool:
     return min_value <= value <= max_value
 
 def get_permutation(length: int):
-    operands = ['+', '*']
+    operands = ['+', '*', 'c']
     return itertools.product(operands, repeat=length+1)
 
 def read_file(file_path):
@@ -24,7 +24,13 @@ def test_line(line):
         for permutation in get_permutation(len(nums)-1):
             num1 = nums[0]
             for num2, operand in zip(nums[1:], permutation):
-                num1 = eval(f"{num1}{operand}{num2}")
+                if operand == 'c':
+                    num1 = str(num1)
+                    num2 = str(num2)
+                    num1 = num1 + num2
+                    num1 = int(num1)
+                else:
+                    num1 = eval(f"{num1}{operand}{num2}")
             if num1 == result:
                 return result
         return 0
