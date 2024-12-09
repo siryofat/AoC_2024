@@ -8,20 +8,18 @@ def is_in_range(value:int, numbers:list[int]) -> bool:
 
 def get_permutation(length: int):
     operands = ['+', '*']
-    return itertools.product(operands, repeat=length)
+    return itertools.product(operands, repeat=length+1)
 
 def read_file(file_path):
     with open(file_path, 'r') as file:
         for line in file:
-            yield line.strip()
+            yield line
 
 def test_line(line):
     try:
         result, operation = line.split(':')
         result = int(result)
         nums = [int(num) for num in operation.split()]
-        if not is_in_range(result, nums):
-            return 0
 
         for permutation in get_permutation(len(nums)-1):
             num1 = nums[0]
@@ -45,7 +43,9 @@ def main():
 
     print(f"Final Total: {total}")
 
-    # Test the problematic line separately
-    print(test_line('72095400778: 1 7 4 1 5 6 6 79 3 5 2 780'))
+
+# Test the problematic line separately
+print(test_line('994003: 22 954 1 155 5 47'))
+print(3310275554652+994003)
 
 main()
