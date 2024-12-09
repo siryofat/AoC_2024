@@ -8,9 +8,11 @@ class path_finder:
         self.array_size = None
         self.visited_positions = set()
         self.posible_loops = set()
+        self.invalid_range = None
 
         self._read_text_file()
         self._get_array_size()
+        self._get_invalid_range()
 
     def _read_text_file(self):
         with open(self.text_file, 'r') as file:
@@ -101,6 +103,7 @@ class path_finder:
 
     def _test_loop(self, position: tuple, direction: str, fixed_start: tuple = None) -> bool:
         fixed_start = fixed_start if fixed_start else position
+        start_direction = direction
         direction = self._turn_right(direction)
         valid = True
         iteration = 0
@@ -113,7 +116,7 @@ class path_finder:
                 if char == '#':
                     direction = self._turn_right(direction)
                     iteration += 1
-                elif test_position == fixed_start:
+                elif test_position == fixed_start and direction == start_direction:
                     return True
                 else:
                     position = test_position
@@ -123,7 +126,23 @@ class path_finder:
         is_loop = self._test_loop(position, direction)
         if is_loop:
             position = self._move_in_direction(position, direction)
+            i, j = position
+            if j == self.invalid_range[0][1]:
+                top = self.invalid_range[1][0]
+                bot = self.invalid_range[0][0]
+                if top <= i <= bot:
+                    return
             self.posible_loops.add(position)
+
+    def _get_invalid_range(self):
+        test_position = self._move_in_direction(self.start_position, self.start_direction)
+        i, j = test_position
+        test_char = self.array[i][j]
+        while test_char != '#':
+            test_position = self._move_in_direction(test_position, self.start_direction)
+            i, j = test_position
+            test_char = self.array[i][j]
+        self.invalid_range = (self.start_position, (i, j))
 
 
     def populate_visited_positions(self):
