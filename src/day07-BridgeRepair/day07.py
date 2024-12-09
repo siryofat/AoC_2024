@@ -25,6 +25,7 @@ def test_line(line):
             num1 = nums[0]
             for num2, operand in zip(nums[1:], permutation):
                 if operand == 'c':
+                    # TODO find a better logic, I'm rushing now. revisit later.
                     num1 = str(num1)
                     num2 = str(num2)
                     num1 = num1 + num2
