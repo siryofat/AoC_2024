@@ -103,20 +103,21 @@ class path_finder:
 
     def _test_loop(self, position: tuple, direction: str, fixed_start: tuple = None) -> bool:
         fixed_start = fixed_start if fixed_start else position
-        start_direction = direction
+        obs_pos = self._move_in_direction(position, direction)
+        start_direction = (direction, self._turn_right(direction))
         direction = self._turn_right(direction)
         valid = True
         iteration = 0
         while valid:
             test_position = self._move_in_direction(position, direction)
-            valid = self._is_valid_position(test_position) and iteration < 1000
+            valid = self._is_valid_position(test_position) and iteration < 10000
             if valid:
                 i, j = test_position
                 char = self.array[i][j]
-                if char == '#':
+                if char == '#' or test_position == obs_pos:
                     direction = self._turn_right(direction)
                     iteration += 1
-                elif test_position == fixed_start and direction == start_direction:
+                elif test_position == fixed_start and direction in start_direction:
                     return True
                 else:
                     position = test_position
@@ -176,3 +177,7 @@ day06_part01 = path_finder('src/Day06-GuardGallivant/day06_input.txt')
 day06_part01.populate_visited_positions()
 print(f'Visited positions: {len(day06_part01.visited_positions)}')
 print(f'Possible loops: {len(day06_part01.posible_loops)}')
+
+
+
+#1575
