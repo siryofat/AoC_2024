@@ -84,7 +84,7 @@ def iterate_data(data:list[list]):
 def main():
     global data
 
-    with open('src/Day10/day10_test.txt', 'r') as file:
+    with open('src/Day10/day10.txt', 'r') as file:
         for line in file:
             data.append(line.strip())
 
@@ -95,3 +95,4 @@ def main():
 
 
 main()
+# part01: 472
