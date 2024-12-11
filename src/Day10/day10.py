@@ -3,7 +3,7 @@ data = []
 
 def get_dirs_to_check(current_dir:str):
     reverser = {'t':'b', 'b':'t', 'l':'r', 'r':'l'}
-    dir_reversed = reverser.get([current_dir], '')
+    dir_reversed = reverser.get(current_dir, '')
     dirs = (current_dir for current_dir in 'tblr' if current_dir != dir_reversed)
     return dirs
 
@@ -22,53 +22,60 @@ def move_in_direction(start_index: tuple, direction: str) -> tuple:
     return end_index
 
 
-def checker(start_point: tuple, current_dir:str = '', counter:int = 0) -> int:
+def checker(start_point: tuple) -> int:
     global data
     max_rows = len(data)
     max_cols = len(data[0])
 
     visited = set()
-    counter = counter if counter else 0
+    visits =[start_point]
 
-    # get starting value:
-    row, col = start_point
-    st_val = data[row][col]
 
     # get directions to check:
-    dirs = get_dirs_to_check(current_dir)
-    for current_dir in dirs:
-        next_pos = move_in_direction(current_dir)
+    dirs = 'tblr'
+    while visits:
+        # get starting value:
+        current_pos = visits.pop()
+        row, col = current_pos
+        st_val = int(data[row][col])
 
-        # check if visited to not check again.
-        if next_pos in visited:
-            return
+        for current_dir in dirs:
+            next_pos = move_in_direction(current_pos, current_dir)
 
-        # check if within bounds:
-        if not(
-            0 <= nrow < max_rows and 0 <= ncol < max_cols
-        ): return
+            # check if visited to not check again.
+            # if next_pos in visited:
+            #     continue
+            # else:
+            #     visited.add(next_pos)
 
-        # check if value doesn't increase by one
-        nrow, ncol = next_pos
-        next_value = data[nrow, ncol]
-        if next_value != st_val+1:
-            return
+            # check if within bounds:
+            nrow, ncol = next_pos
+            if not(
+                0 <= nrow < max_rows and 0 <= ncol < max_cols
+            ): continue
 
-        # check if reached 9:
-        if next_value == 9:
-            counter += 1
-            return
+            # check if value doesn't increase by one
+            next_value = int(data[nrow][ncol])
+            if next_value != st_val+1:
+                continue
 
-        checker(next_pos, current_dir, counter)
+            # check if reached 9:
+            if next_value == 9:
+                visited.add(next_pos)
+                continue
 
-    return counter
+            visits.append(next_pos)
+
+    return len(visited)
 
 
 def iterate_data(data:list[list]):
     iterations = []
     for r, row in enumerate(data):
         for c, char in enumerate(row):
-            if char == 0:
+            if int(char) == 0:
+                if (r,c) == (4,6):
+                    print('')
                 score = checker((r,c))
                 iterations.append(score)
     return iterations
@@ -84,6 +91,7 @@ def main():
     result = iterate_data(data)
 
     print(sum(result))
+    print(result)
 
 
 main()
