@@ -22,13 +22,15 @@ def move_in_direction(start_index: tuple, direction: str) -> tuple:
     return end_index
 
 
-def checker(start_point: tuple) -> int:
+def checker(start_point: tuple, counter:int = 0) -> tuple:
     global data
     max_rows = len(data)
     max_cols = len(data[0])
 
     visited = set()
     visits =[start_point]
+
+    counter = counter if counter else 0
 
 
     # get directions to check:
@@ -62,23 +64,26 @@ def checker(start_point: tuple) -> int:
             # check if reached 9:
             if next_value == 9:
                 visited.add(next_pos)
+                counter += 1
                 continue
 
             visits.append(next_pos)
 
-    return len(visited)
+    return len(visited), counter
 
 
 def iterate_data(data:list[list]):
     iterations = []
+    ratings = []
     for r, row in enumerate(data):
         for c, char in enumerate(row):
             if int(char) == 0:
                 if (r,c) == (4,6):
                     print('')
-                score = checker((r,c))
+                score, rating = checker((r,c))
                 iterations.append(score)
-    return iterations
+                ratings.append(rating)
+    return iterations, ratings
 
 
 def main():
@@ -88,10 +93,12 @@ def main():
         for line in file:
             data.append(line.strip())
 
-    result = iterate_data(data)
+    result, ratings = iterate_data(data)
 
-    print(sum(result))
+    print(f'total results: {sum(result)}')
     print(result)
+    print(f'total ratings: {sum(ratings)}')
+    print(ratings)
 
 
 main()
