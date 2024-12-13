@@ -17,7 +17,7 @@ fence_prices = []
 
 # populates data:
 data = []
-with open('src/Day12-GardenGroups/day12_test.txt', 'r') as file:
+with open('src/Day12-GardenGroups/day12.txt', 'r') as file: #1396562
     for line in file:
         data.append(line.strip())
 
@@ -67,11 +67,6 @@ for r, row in enumerate(data):
         # adds all visited spots to a visited_zones to not visit them again.
         visited_zones |= visited
 
-        # print debugging:
-        print(f'zone visisted {item=}')
-        print(f'{zone_area=}, {fence_perimeter=}')
-
 total_cost = sum(fence_prices)
 
-print(f'total prices list: {fence_prices}')
 print(f'Total cost: {total_cost}')
