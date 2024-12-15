@@ -1,4 +1,4 @@
-test = 'p=2,4 v=2,-3'
+import math
 
 def read_line_values(line_info:str) -> tuple:
     '''
@@ -53,3 +53,28 @@ def get_quadrant(pos_x:int, pos_y:int, space:tuple) -> str:
 
     return 'axis'
 
+
+def main():
+    space_dimensions = (11,7)
+    seconds=100
+    file_path = 'src/Day14-RestroomRedoubt/day14_test.txt'
+    quadrants = {'axis': 0, 'Q1': 0, 'Q2': 0, 'Q3': 0, 'Q4': 0}
+
+    with open(file_path, 'r') as file:
+        for line in file:
+            position, velocity = read_line_values(line.strip())
+            final_x, final_y = move_robot(position, velocity, seconds, space_dimensions)
+
+            quadrant = get_quadrant(final_x, final_y, space_dimensions)
+            quadrants[quadrant] += 1
+
+            matrix[final_y][final_x] += 1
+
+    quadrants_values = [quadrants[quadrant] for quadrant in ('Q1', 'Q2', 'Q3', 'Q4')]
+    safety_factor = math.prod(quadrants_values)
+
+    print(quadrants)
+    print(safety_factor)
+
+
+main()
