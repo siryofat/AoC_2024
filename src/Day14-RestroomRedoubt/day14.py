@@ -30,5 +30,26 @@ def move_robot(initial_position: tuple,
 
     return corrected_x, corrected_y
 
-p, v = read_line_values(test)
-x, y = move_robot(p,v,5,(11,7))
+
+def get_quadrant(pos_x:int, pos_y:int, space:tuple) -> str:
+    """
+    Get x,y and dimension. Array is divided in four quadrants, ignoring
+    items that fall in the middle axis.
+    """
+    max_x, max_y = space
+    mid_y_axis = max_x // 2
+    mid_x_axis = max_y // 2
+
+    if 0 <= pos_x < mid_y_axis:
+        if 0 <= pos_y < mid_x_axis:
+            return 'Q1'
+        elif pos_y > mid_x_axis:
+            return 'Q3'
+    elif pos_x > mid_y_axis:
+        if 0 <= pos_y < mid_x_axis:
+            return 'Q2'
+        elif pos_y > mid_x_axis:
+            return 'Q4'
+
+    return 'axis'
+
