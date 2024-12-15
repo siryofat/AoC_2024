@@ -68,8 +68,6 @@ def main():
             quadrant = get_quadrant(final_x, final_y, space_dimensions)
             quadrants[quadrant] += 1
 
-            matrix[final_y][final_x] += 1
-
     quadrants_values = [quadrants[quadrant] for quadrant in ('Q1', 'Q2', 'Q3', 'Q4')]
     safety_factor = math.prod(quadrants_values)
 
