@@ -55,9 +55,9 @@ def get_quadrant(pos_x:int, pos_y:int, space:tuple) -> str:
 
 
 def main():
-    space_dimensions = (11,7)
+    space_dimensions = (101,103)
     seconds=100
-    file_path = 'src/Day14-RestroomRedoubt/day14_test.txt'
+    file_path = 'src/Day14-RestroomRedoubt/day14.txt'
     quadrants = {'axis': 0, 'Q1': 0, 'Q2': 0, 'Q3': 0, 'Q4': 0}
 
     with open(file_path, 'r') as file:
