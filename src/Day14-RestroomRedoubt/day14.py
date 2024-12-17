@@ -1,4 +1,7 @@
 import math
+import seaborn as sns
+import matplotlib.pyplot as plt
+from pathlib import Path
 
 def read_line_values(line_info:str) -> tuple:
     '''
@@ -57,22 +60,60 @@ def get_quadrant(pos_x:int, pos_y:int, space:tuple) -> str:
 def main():
     space_dimensions = (101,103)
     seconds=100
-    file_path = 'src/Day14-RestroomRedoubt/day14.txt'
+    cwd = Path(__file__).parent.resolve()
+    print(cwd)
+    file_path = cwd / 'day14.txt' #224554908
     quadrants = {'axis': 0, 'Q1': 0, 'Q2': 0, 'Q3': 0, 'Q4': 0}
+    min_factor = 999999999
+    min_factor_index = 0
+
+    data = []
+
 
     with open(file_path, 'r') as file:
         for line in file:
-            position, velocity = read_line_values(line.strip())
-            final_x, final_y = move_robot(position, velocity, seconds, space_dimensions)
+            data.append(line.strip())
+
+    for i in range(seconds+1):
+        plot_dict = {'x': [], 'y': [], 'quadrant': []}
+        quadrants = {'axis': 0, 'Q1': 0, 'Q2': 0, 'Q3': 0, 'Q4': 0}
+        for row in data:
+            position, velocity = read_line_values(row)
+            final_x, final_y = move_robot(position, velocity, i, space_dimensions)
+
+            # Keep this to solve part 01:
 
             quadrant = get_quadrant(final_x, final_y, space_dimensions)
             quadrants[quadrant] += 1
+
+            # This dict solves part 02:
+            quadrant = get_quadrant(final_x, final_y, space_dimensions)
+            plot_dict['x'].append(final_x)
+            plot_dict['y'].append(final_y)
+            plot_dict['quadrant'].append(quadrant)
+
+        quadrants_values = [quadrants[quadrant] for quadrant in ('Q1', 'Q2', 'Q3', 'Q4')]
+        safety_factor = math.prod(quadrants_values)
+        if safety_factor < min_factor:
+            min_factor = safety_factor
+            min_factor_index = i
+        # Plot the matrix to find the easter egg visualy:
+        if i==min_factor_index: #6644
+            print(f'{i=}')
+            sns.scatterplot(x='x', y='y', data=plot_dict, hue='quadrant', palette=sns.color_palette('husl',5))
+            plt.show()
+
 
     quadrants_values = [quadrants[quadrant] for quadrant in ('Q1', 'Q2', 'Q3', 'Q4')]
     safety_factor = math.prod(quadrants_values)
 
     print(quadrants)
     print(safety_factor)
+
+    print(f'{min_factor=}')
+    print(f'{min_factor_index=}')
+
+
 
 
 main()
